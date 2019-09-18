@@ -15,7 +15,7 @@ Perpendicular distance formula:
 ## Non-parametric version
 See [A novel framework for making dominant point detection methods non-parametric](https://core.ac.uk/download/pdf/131287229.pdf) by Prasad, Leung, Quek, and Cho. 
 ### From the paper: 
-_3.1.2.__Non-parametric adaptation of RDP___
+_3.1.2. __Non-parametric adaptation of RDP___
 
 _In the above method, at each step in the recursion, if the length of the line segment that is fit most recently on the curve (or sub-curve) is_ s _and the slope of the line segment is_ m, _then using Eq.(4), we compute_ dmax _and use it in Eq.(7) as_ dtol=dmax. _The pseudocodes of the original and the modified methods are given in Fig. 3 and the changes are highlighted for the ease of comparison. As a consequence of theproposed modification, the original method does not require any control parameter and adaptively computes the suitable value of_ dtol _automatically._
 
@@ -25,6 +25,9 @@ _In the above method, at each step in the recursion, if the length of the line s
 
 ### Reduced to 15,157 points (e=0.5)
 ![15157points](RamerDouglasPeuckerNetV2.Test/RamerDouglasPeuckerNetV2.Test/resources/15157points.PNG)
+
+### Reduced to 11,342 points (non-parametric)
+![11342points](RamerDouglasPeuckerNetV2.Test/RamerDouglasPeuckerNetV2.Test/resources/11342points_np.png)
 
 ### Reduced to 1,385 points (e=10)
 ![1385points](RamerDouglasPeuckerNetV2.Test/RamerDouglasPeuckerNetV2.Test/resources/1385points.PNG)
