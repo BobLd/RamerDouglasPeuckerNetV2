@@ -57,6 +57,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="resources\11342points_np.png" />
     <Content Include="resources\1385points.PNG" />
     <Content Include="resources\15157points.PNG" />
     <Content Include="resources\original.png" />
