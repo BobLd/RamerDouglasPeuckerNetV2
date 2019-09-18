@@ -22,8 +22,7 @@ namespace RamerDouglasPeuckerNetV2
 
     /// <summary>
     /// The purpose of the algorithm is, given a curve composed of line segments
-    /// (which is also called a Polyline in some contexts), to find a similar
-    /// curve with fewer points.
+    /// to find a similar curve with fewer points.
     /// </summary>
     public static class RamerDouglasPeucker
     {
