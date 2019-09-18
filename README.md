@@ -8,14 +8,16 @@ The [pseudo-code](https://en.wikipedia.org/wiki/Ramer%E2%80%93Douglas%E2%80%93Pe
 
 In order to make the algorithm faster, we consider the squared distance (and epsilon) so that we avoid using the _absolute value_ and _square root_ functions in the distance computation. We also split the computation of the distance so that we put in the 'for loop' only what is needed (the denominator is only computed once).
 
+Perpendicular distance formula:
+
 ![perpendicular distance from wiki](https://wikimedia.org/api/rest_v1/media/math/render/svg/be2ab4a9d9d77f1623a2723891f652028a7a328d)
 
 ## Results
 ### Original
 ![original](RamerDouglasPeuckerNetV2.Test/RamerDouglasPeuckerNetV2.Test/resources/original.png)
 
-### 15157 points
-![15157points](RamerDouglasPeuckerNetV2.Test/RamerDouglasPeuckerNetV2.Test/resources/15157points.png)
+### Reduced to 15,157 points (e=0.5)
+![15157points](RamerDouglasPeuckerNetV2.Test/RamerDouglasPeuckerNetV2.Test/resources/15157points.PNG)
 
-### 1385 points
-![1385points](RamerDouglasPeuckerNetV2.Test/RamerDouglasPeuckerNetV2.Test/resources/1385points.png)
+### Reduced to 1,385 points (e=10)
+![1385points](RamerDouglasPeuckerNetV2.Test/RamerDouglasPeuckerNetV2.Test/resources/1385points.PNG)
