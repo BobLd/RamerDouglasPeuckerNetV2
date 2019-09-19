@@ -2,7 +2,7 @@
 
 namespace RamerDouglasPeuckerNetV2
 {
-    /**************************************************************************
+    /***************************************************************************
       * Ramer–Douglas–Peucker algorithm
       * The purpose of the algorithm is, given a curve composed of line segments 
       * (which is also called a Polyline in some contexts), to find a similar 
@@ -18,6 +18,9 @@ namespace RamerDouglasPeuckerNetV2
       * so that we avoid using the 'abs' and 'sqrt' in the distance computation.
       * We also split the computation of the distance so that we put in the 'for 
       * loop' only what is needed.
+      * 
+      * The non-parametric version follows 'A novel framework for making dominant 
+      * point detection methods non-parametric' by Prasad, Leung, Quek, and Cho.
       **************************************************************************/
 
     /// <summary>
@@ -39,7 +42,15 @@ namespace RamerDouglasPeuckerNetV2
             epsilon *= epsilon; // we use squared distance
             if (epsilon <= float.Epsilon) return points;
 
-            return reduce(points, epsilon);
+            List<Point> firsts = new List<Point>();
+            while (points[0].Equals(points[points.Count - 1]))
+            {
+                firsts.Add(points[0]);
+                points.RemoveAt(0);
+            }
+
+            firsts.AddRange(reduce(points, epsilon));
+            return firsts;
         }
 
         private static List<Point> reduce(List<Point> points, float epsilon)
@@ -88,35 +99,29 @@ namespace RamerDouglasPeuckerNetV2
         }
 
         /// <summary>
-        /// Follows 'A novel framework for making dominant point detection methods non-parametric'
-        /// by Prasad, Leung, Quek, and Cho.
-        /// </summary>
-        /// <param name="distX">point2.X - point1.X</param>
-        /// <param name="distY">point2.Y - point1.Y</param>
-        /// <returns></returns>
-        private static float ComputeEpsilon(float distX, float distY)
-        {
-            float m = distY / distX;                                                // slope
-            double s = System.Math.Sqrt((double)(distX * distX + distY * distY));   // distance
-            double invS = 1.0 / s;
-            double phi = System.Math.Atan(m);
-            double cosPhi = System.Math.Cos(phi);
-            double sinPHi = System.Math.Sin(phi);
-            double tmax = invS * (System.Math.Abs(cosPhi) + System.Math.Abs(sinPHi));
-            double poly = 1 - tmax + tmax * tmax;
-            double partialPhi = System.Math.Max(System.Math.Atan(invS * System.Math.Abs(sinPHi + cosPhi) * poly),
-                                                System.Math.Atan(invS * System.Math.Abs(sinPHi - cosPhi) * poly));
-            float dmax = (float)(s * partialPhi);
-            return dmax * dmax; // we use squared distance
-        }
-
-        /// <summary>
         /// Uses the non-parametric Ramer Douglas Peucker algorithm to reduce the number of points.
         /// </summary>
         /// <param name="points">The points.</param>
-        /// <param name="epsilon">The tolerance.</param>
         /// <returns></returns>
         public static List<Point> Reduce(List<Point> points)
+        {
+            List<Point> firsts = new List<Point>();
+            while (points[0].Equals(points[points.Count - 1]))
+            {
+                firsts.Add(points[0]);
+                points.RemoveAt(0);
+            }
+
+            firsts.AddRange(reduceNP(points));
+            return firsts;
+        }
+
+        /// <summary>
+        /// Non-parametric Ramer Douglas Peucker algorithm.
+        /// </summary>
+        /// <param name="points"></param>
+        /// <returns></returns>
+        private static List<Point> reduceNP(List<Point> points)
         {
             float dmax = 0;
             int index = 0;
@@ -148,8 +153,8 @@ namespace RamerDouglasPeuckerNetV2
             if (dmax > epsilon)
             {
                 // Recursive call
-                var recResults1 = Reduce(points.GetRange(0, index + 1));
-                var recResults2 = Reduce(points.GetRange(index, points.Count - index));
+                var recResults1 = reduceNP(points.GetRange(0, index + 1));
+                var recResults2 = reduceNP(points.GetRange(index, points.Count - index));
 
                 // Build the result list
                 recResults1.RemoveAt(recResults1.Count - 1);
@@ -160,6 +165,29 @@ namespace RamerDouglasPeuckerNetV2
             {
                 return new List<Point> { point1, point2 };
             }
+        }
+
+        /// <summary>
+        /// Follows 'A novel framework for making dominant point detection methods non-parametric'
+        /// by Prasad, Leung, Quek, and Cho.
+        /// </summary>
+        /// <param name="distX">point2.X - point1.X</param>
+        /// <param name="distY">point2.Y - point1.Y</param>
+        /// <returns></returns>
+        private static float ComputeEpsilon(float distX, float distY)
+        {
+            float m = distY / distX;                                                // slope
+            double s = System.Math.Sqrt((double)(distX * distX + distY * distY));   // distance
+            double invS = 1.0 / s;
+            double phi = System.Math.Atan(m);
+            double cosPhi = System.Math.Cos(phi);
+            double sinPHi = System.Math.Sin(phi);
+            double tmax = invS * (System.Math.Abs(cosPhi) + System.Math.Abs(sinPHi));
+            double poly = 1 - tmax + tmax * tmax;
+            double partialPhi = System.Math.Max(System.Math.Atan(invS * System.Math.Abs(sinPHi + cosPhi) * poly),
+                                                System.Math.Atan(invS * System.Math.Abs(sinPHi - cosPhi) * poly));
+            float dmax = (float)(s * partialPhi);
+            return dmax * dmax; // we use squared distance
         }
     }
 }

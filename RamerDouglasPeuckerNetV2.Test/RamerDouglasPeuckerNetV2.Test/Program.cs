@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 
 namespace RamerDouglasPeuckerNetV2.Test
@@ -13,6 +12,8 @@ namespace RamerDouglasPeuckerNetV2.Test
         static void Main(string[] args)
         {
             List<Point> points = Data.Array.Select(d => new Point(d[0], d[1])).ToList();
+
+            points.Add(points[0]);
 
             Console.WriteLine(points.Count().ToString("#,0") + " points");
             Stopwatch stopwatch = new Stopwatch();

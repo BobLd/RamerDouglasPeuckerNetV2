@@ -15,5 +15,15 @@
         {
             return X.ToString() + ", " + Y.ToString();
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is Point point)
+            {
+                if (this.X != point.X || this.Y != point.Y) return false;
+                return true;
+            }
+            return false;
+        }
     }
 }
